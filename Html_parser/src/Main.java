@@ -4,12 +4,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.*;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -17,24 +11,24 @@ public class Main {
 
         Document doc = null;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Введите ссылку на страницу по типу" + "\n"+ "https://www.perekrestok.ru/cat/c/202/cipsy" + "\n\n" + "После введения ссылки нажмите Enter");
-        String input = scanner.nextLine();
+        System.out.println("Введите ссылку на страницу по типу"
+                + "\n" + "https://www.perekrestok.ru/cat/c/202/cipsy"
+                + "\n\n" + "После введения ссылки нажмите Enter");
 
+        String input = scanner.nextLine();
         doc = Jsoup.connect(input).get();
         Elements picLink = doc.select("span"); //Тип ключа в начале строчки
         // System.out.println(picLink);
         for (Element element : picLink) {
             if (element.hasText()) {
                 element.absUrl("product-card__link-text"); //Ссылка на конкретный ключ для поиска
-                String meme = element.text().replaceAll("\\d+\\W", "").replaceAll("\\n", "")
+                String meme = element.text().replaceAll("\\d+\\W", "").replaceAll("\\n", "") //Меме - строчка буфера
                         .replaceAll("\\d+", "").replaceAll("-", "").replaceAll(",", "");
                 //System.out.println(meme);
                 FileWriter writer = new FileWriter("ParsedFile.txt", true);
                 writer.write(meme + "\n");
                 writer.flush();
-
-
-               // https://www.perekrestok.ru/cat/c/202/cipsy
+                // https://www.perekrestok.ru/cat/c/202/cipsy
             }
 
         }
